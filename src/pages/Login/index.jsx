@@ -1,46 +1,44 @@
-import React from "react";
-import { useDispatch, useSelector } from 'react-redux'
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import { useForm } from 'react-hook-form'
-import { fetchAuth, selectIsAuth } from '../../redux/slices/auth'
-import { Navigate } from 'react-router-dom'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import { useForm } from 'react-hook-form';
+import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
+import { Navigate } from 'react-router-dom';
 
-import styles from "./Login.module.scss";
-
+import styles from './Login.module.scss';
 
 export const Login = () => {
-  const isAuth = useSelector(selectIsAuth)
-  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      email: 'test@test.ru',
-      password: '12345',
+      email: '',
+      password: '',
     },
-    mode: 'onChange'
-  })
+    mode: 'onChange',
+  });
 
   const onSubmit = async (values) => {
-    const data = await dispatch(fetchAuth(values))
+    const data = await dispatch(fetchAuth(values));
     if (!data.payload) {
-      return alert('Не удалось авторизоваться')
+      return alert('Не удалось авторизоваться');
     }
 
     if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload.token)
+      window.localStorage.setItem('token', data.payload.token);
     }
-  }
-
+  };
 
   if (isAuth) {
-    return <Navigate to='/' />
+    return <Navigate to="/" />;
   }
 
   return (
